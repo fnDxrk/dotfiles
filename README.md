@@ -1,1 +1,1 @@
-# Archinstall
+# Archlinux
