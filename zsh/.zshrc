@@ -4,20 +4,26 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-HISTFILE="$ZDOTDIR/.zsh_history"
-HISTSIZE=10000
-SAVEHIST=10000
+# History won't save duplicates.
+setopt HIST_IGNORE_ALL_DUPS
 
-autoload -Uz compinit
-compinit
+# History won't show duplicates on search.
+setopt HIST_FIND_NO_DUPS
 
+# Zsh Completion System
+autoload -U compinit; compinit
+
+# With hidden file
+_comp_options+=(globdots)
+
+# Plugins
 source /home/dxrk_/.config/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /home/dxrk_/.config/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# Theme
 source $ZDOTDIR/powerlevel10k/powerlevel10k.zsh-theme
 
-# To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
-[[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
-
+# Key binds
 typeset -g -A key
 
 key[Home]="${terminfo[khome]}"
@@ -54,3 +60,5 @@ if (( ${+terminfo[smkx]} && ${+terminfo[rmkx]} )); then
 	add-zle-hook-widget -Uz zle-line-finish zle_application_mode_stop
 fi
 
+# To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
+[[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
