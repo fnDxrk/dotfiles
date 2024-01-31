@@ -80,10 +80,10 @@ fi
 
 # auto-cpufreq
 
+yay -S cpupower-gui
+
 git clone https://github.com/AdnanHodzic/auto-cpufreq.git
 cd auto-cpufreq && sudo ./auto-cpufreq-installer
-
-rm -rf auto-cpufreq
 
 ############################################################
 
