@@ -22,6 +22,13 @@ systemctl start systemd-zram-setup@zram0.service
 
 ############################################################
 
+# Hyprland
+
+yay -S hyprland-git waybar-git polkit-gnome dunst wl-clipboard
+
+
+############################################################
+
 # zsh
 
 yay -S zsh ttf-jetbrains-mono ttf-jetbrains-mono-nerd
