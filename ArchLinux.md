@@ -368,7 +368,6 @@ yay -S neovim wl-clipboard
 ```
 neofetch pfetch macchina
 ```
-
 ## Настройка персонализации
 
 ```
@@ -377,3 +376,18 @@ yay -S nwg-look qt6ct
 # nwg-look --- GTK-приложения
 # qt6ct --- Qt-приложения
 ```
+## Игры
+
+```
+yay -S gamescope lutris mangohud lib32-mangohud goverlay vkbasalt
+```
+
+Для работы gamescope нужно включить Vkbasalt :
+
+```
+~/.config/hypr/hyprland.conf
+------------------------------------------------------------------------------
+env = ENABLE_VKBASALT,1
+------------------------------------------------------------------------------
+```
+
