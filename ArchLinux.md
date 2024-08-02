@@ -325,7 +325,7 @@ echo 1 > /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode
 ### Пакеты
 
 ```
-yay -S hyprland waybar kitty rofi-wayland gtklock waypaper dunst firefox
+yay -S hyprland waybar kitty rofi-wayland gtklock waypaper swww dunst firefox clipse
 ```
 ### Звук
 
@@ -390,4 +390,10 @@ yay -S gamescope lutris mangohud lib32-mangohud goverlay vkbasalt
 env = ENABLE_VKBASALT,1
 ------------------------------------------------------------------------------
 ```
+#### Gothic I / II
+
+Для работы с игрой нужно поставить правильный Proton :
+
+`Steam -> Настройки -> Совместимость -> Proton-7.0-6`
+
 
