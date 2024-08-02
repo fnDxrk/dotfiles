@@ -153,7 +153,7 @@ title	ArchLinux
 linux	/vmlinuz-linux
 initrd	/amd-ucode.img
 initrd	/initramfs-linux.img
-options	root="LABEL=Arch" rw quiet splash loglevel=3 udev.log_level=3 zswap.enabled=0 i8042.probe_defer amd_pstate=passive
+options	root="LABEL=Arch" rw quiet splash loglevel=3 udev.log_level=3 zswap.enabled=0 nvidia-drm.modeset=1
 ------------------------------------------------------------------------------
 ```
 
@@ -228,7 +228,7 @@ yay -S mesa lib32-mesa vulkan-radeon lib32-vulkan-radeon libva-mesa-driver lib32
 ## Nvidia
 
 ```
-yay -S nvidia-dkms nvidia-utils lib32-nvidia-utils nvidia-settings vulkan-icd-loader lib32-vulkan-icd-loader mesa-utils linux-headers dkms prime-run
+yay -S nvidia-dkms nvidia-utils lib32-nvidia-utils nvidia-settings vulkan-icd-loader lib32-vulkan-icd-loader nvidia-prime mesa-utils linux-headers dkms 
 
 /etc/modprobe.d/nvidia-kms.conf
 ------------------------------------------------------------------------------
