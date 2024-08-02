@@ -184,7 +184,7 @@ reboot
 ```
 
 ## Настройка системы
-## Yay
+### Yay
 
 ```
 git clone https://aur.archlinux.org/yay-bin
@@ -210,7 +210,7 @@ reboot
 systemctl start systemd-zram-setup@zram0.service
 ```
 
-## Polkit
+### Polkit
 
 ```
 yay -S polkit-gnome
@@ -225,7 +225,7 @@ exec-once = /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 ```
 yay -S mesa lib32-mesa vulkan-radeon lib32-vulkan-radeon libva-mesa-driver lib32-libva-mesa-driver vulkan-mesa-layers opencl-rusticl-mesa lib32-opencl-rusticl-mesa
 ```
-## Nvidia
+### Nvidia
 
 ```
 yay -S nvidia-dkms nvidia-utils lib32-nvidia-utils nvidia-settings vulkan-icd-loader lib32-vulkan-icd-loader nvidia-prime mesa-utils linux-headers dkms 
@@ -308,7 +308,7 @@ turbo = never
 ------------------------------------------------------------------------------
 ```
 
-## Батарея
+### Батарея
 
 ```
 # После установки пакетов нужно перезагрузиться
@@ -368,7 +368,7 @@ yay -S neovim wl-clipboard
 ```
 neofetch pfetch macchina
 ```
-## Настройка персонализации
+### Настройка персонализации
 
 ```
 yay -S nwg-look qt6ct
@@ -376,7 +376,7 @@ yay -S nwg-look qt6ct
 # nwg-look --- GTK-приложения
 # qt6ct --- Qt-приложения
 ```
-## Игры
+### Игры
 
 ```
 yay -S gamescope lutris mangohud lib32-mangohud goverlay vkbasalt

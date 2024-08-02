@@ -91,7 +91,7 @@
                 "sortOrder": "alphabetical",
                 "showSearch": false,
                 "searchQuery": "",
-                "backlinkCollapsed": false,
+                "backlinkCollapsed": true,
                 "unlinkedCollapsed": true
               }
             }
@@ -129,12 +129,12 @@
               }
             }
           }
-        ]
+        ],
+        "currentTab": 3
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -147,5 +147,8 @@
     }
   },
   "active": "13229b7ab90f44d2",
-  "lastOpenFiles": []
+  "lastOpenFiles": [
+    "README.md",
+    "ArchLinux.md"
+  ]
 }
