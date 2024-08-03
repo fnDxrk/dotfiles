@@ -325,7 +325,35 @@ echo 1 > /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode
 ### Пакеты
 
 ```
-yay -S hyprland waybar kitty rofi-wayland gtklock waypaper swww dunst firefox clipse
+yay -S hyprland waybar kitty rofi-wayland gtklock waypaper-git swww dunst firefox clipse
+```
+### Waypaper
+
+>[!info] Для работы новых функций нужно использовать **waypaper-git**
+
+```
+~/config/waypaper/config.ini
+------------------------------------------------------------------------------
+[Settings]
+language = ru
+folder = ~/Pictures
+wallpaper = ~/Pictures/CXHJVNx5.png
+backend = swww
+monitors = All
+fill = fill
+sort = name
+color = #ffffff
+subfolders = False
+show_hidden = False
+show_gifs_only = False
+post_command = 
+number_of_columns = 3
+swww_transition_type = fade
+swww_transition_step = 90
+swww_transition_angle = 0
+swww_transition_duration = 2
+swww_transition_fps = 60
+------------------------------------------------------------------------------
 ```
 ### Звук
 
