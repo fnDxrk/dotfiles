@@ -307,7 +307,6 @@ turbo = never
 #stop_threshold = 80
 ------------------------------------------------------------------------------
 ```
-
 ### Батарея
 
 ```
@@ -364,6 +363,11 @@ yay -S pipewire lib32-pipewire pipewire-alsa pipewire-pulse pavucontrol
 
 ```
 yay -S noto-fonts ttf-dejavu ttf-droid ttf-roboto ttf-liberation ttf-font-awesome ttf-nerd-fonts-symbols
+```
+### Диски
+
+```
+yay -S gnome-disk-utility qdiskinfo kdiskmark
 ```
 ### Проводник
 
