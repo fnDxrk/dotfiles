@@ -431,6 +431,32 @@ yay -S gamescope lutris mangohud lib32-mangohud goverlay vkbasalt
 env = ENABLE_VKBASALT,1
 ------------------------------------------------------------------------------
 ```
+#### Выбор GPU
+
+Чтобы узнать список GPU, использующих Vulkan, введите следующее :
+
+```
+MESA_VK_DEVICE_SELECT=list vulkaninfo
+------------------------------------------------------------------------------
+selectable devices:
+  GPU 0: 10de:28e0 "NVIDIA GeForce RTX 4060 Laptop GPU" discrete GPU 0000:01:00.0
+  GPU 1: 1002:15bf "AMD Radeon 780M (RADV GFX1103_R1)" integrated GPU 0000:06:00.0
+```
+
+Сама переменная работает очень странно. В источнике написано, что для выбора GPU нужно указать номер "vid:did". Но на деле выходит, что какой бы я номер не указал, всегда будет NVIDIA. 
+
+В моём случае, чтобы выбрать интегрированный GPU, помогло добавление восклицательного знака в конец номера  :
+
+```
+MESA_VK_DEVICE_SELECT=1002:15bf! vkcube
+------------------------------------------------------------------------------
+Selected GPU 0: AMD Radeon 780M (RADV GFX1103_R1), type: IntegratedGpu
+```
+
+`!` знак влияет на переменную `MESA_VK_DEVICE_SELECT_FORCE_DEFAULT_DEVICE`.
+
+> [!info] MESA_VK_DEVICE_SELECT_FORCE_DEFAULT_DEVICE 
+> Если установлено значение 1, устройство, определенное как устройство по умолчанию, будет единственным возвращается в API vkEnumeratePhysicalDevices.
 #### Gothic I / II
 
 Для работы с игрой нужно поставить правильный Proton :
