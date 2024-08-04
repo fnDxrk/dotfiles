@@ -192,6 +192,15 @@ cd yay-bin
 makepkg -si
 cd && rm -rf yay-bin
 ```
+
+### Reflector
+
+```
+yay -S reflector
+sudo cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist_copy
+sudo reflector -c Russia -l 10 --sort rate --save /etc/pacman.d/mirrorlist
+systemctl enable --now reflector.timer
+```
 ### Zram
 
 ```
