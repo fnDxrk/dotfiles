@@ -192,7 +192,12 @@ cd yay-bin
 makepkg -si
 cd && rm -rf yay-bin
 ```
+### XDG user directories
 
+```
+yay -S xdg-user-dirs
+LC_ALL=C xdg-user-dirs-update --force
+```
 ### Reflector
 
 ```
