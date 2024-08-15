@@ -489,7 +489,7 @@ ciadpi --fake -1 --ttl 8
 Чтобы не вводить команду каждый раз после загрузки системы, создадим unit.
 
 ```
-/etc/systemd/system/byedpi.service
+~/.config/systemd/user/byedpi.service
 ------------------------------------------------------------------------------
 [Unit]
 Description=ByeDPI
@@ -501,11 +501,11 @@ ExecStart=ciadpi --disorder 1 --auto=torst --tlsrec 1+s
 WantedBy=multi-user.target
 ------------------------------------------------------------------------------
 
-systemctl enable --now byedpi.service
+systemctl enable --now --user byedpi.service
 ```
 
 Перезагружаем систему и проверяем работоспособность unit'а :
 
 ```
-systemctl status byedpi.service
+systemctl status --user byedpi.service
 ```
