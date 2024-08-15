@@ -473,39 +473,31 @@ Selected GPU 0: AMD Radeon 780M (RADV GFX1103_R1), type: IntegratedGpu
 `Steam -> Настройки -> Совместимость -> Proton-7.0-6`
 ### Обход блокировки YouTube
 
-> ByeDPI - это программа, которая создаёт локальный прокси-сервер SOCKS.
+> SpoofDPI - это простое и быстрое ПО, созданное для обхода **Deep Packet Inspection**
 
 ```
-yay -S byedpi
+yay -S spoof-dpi-bin
 ```
 
-Для работы ByeDPI используйте любую из двух команд :
+Создадим пользовательский unit, чтобы не вводить команду каждый раз после запуска системы :
 
 ```
-ciadpi --disorder 1 --auto=torst --tlsrec 1+s
-ciadpi --fake -1 --ttl 8
-```
-
-Чтобы не вводить команду каждый раз после загрузки системы, создадим unit.
-
-```
-~/.config/systemd/user/byedpi.service
+~/.config/systemd/user/spoof-dpi.service
 ------------------------------------------------------------------------------
 [Unit]
-Description=ByeDPI
+Description=SpoofDPI
 
 [Service]
-ExecStart=ciadpi --disorder 1 --auto=torst --tlsrec 1+s
+ExecStart=spoof-dpi
 
 [Install]
 WantedBy=multi-user.target
 ------------------------------------------------------------------------------
-
-systemctl enable --now --user byedpi.service
+systemctl enable --now --user spoof-dpi.service
 ```
 
 Перезагружаем систему и проверяем работоспособность unit'а :
 
 ```
-systemctl status --user byedpi.service
+systemctl status --user spoof-dpi.service
 ```
