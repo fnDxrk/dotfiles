@@ -491,7 +491,7 @@ Description=SpoofDPI
 ExecStart=spoof-dpi
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=default.target
 ------------------------------------------------------------------------------
 systemctl enable --now --user spoof-dpi.service
 ```
@@ -501,3 +501,7 @@ systemctl enable --now --user spoof-dpi.service
 ```
 systemctl status --user spoof-dpi.service
 ```
+
+Теперь нужно настроить Firefox. 
+Переходим по следующему пути : Настройки > Основные > Настройки сети > Настроить Настраиваем так, как на скриншоте ниже :
+![[2024-08-15-232501_hyprshot.png]]
