@@ -471,5 +471,41 @@ Selected GPU 0: AMD Radeon 780M (RADV GFX1103_R1), type: IntegratedGpu
 Для работы с игрой нужно поставить правильный Proton :
 
 `Steam -> Настройки -> Совместимость -> Proton-7.0-6`
+### Обход блокировки YouTube
 
+> ByeDPI - это программа, которая создаёт локальный прокси-сервер SOCKS.
 
+```
+yay -S byedpi
+```
+
+Для работы ByeDPI используйте любую из двух команд :
+
+```
+ciadpi --disorder 1 --auto=torst --tlsrec 1+s
+ciadpi --fake -1 --ttl 8
+```
+
+Чтобы не вводить команду каждый раз после загрузки системы, создадим unit.
+
+```
+/etc/systemd/system/byedpi.service
+------------------------------------------------------------------------------
+[Unit]
+Description=ByeDPI
+
+[Service]
+ExecStart=ciadpi --disorder 1 --auto=torst --tlsrec 1+s
+
+[Install]
+WantedBy=multi-user.target
+------------------------------------------------------------------------------
+
+systemctl enable --now byedpi.service
+```
+
+Перезагружаем систему и проверяем работоспособность unit'а :
+
+```
+systemctl status byedpi.service
+```
