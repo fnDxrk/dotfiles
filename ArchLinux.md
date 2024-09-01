@@ -342,7 +342,7 @@ echo 1 > /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode
 ### Пакеты
 
 ```
-yay -S hyprland xdg-desktop-portal-gtk xdg-desktop-portal-hyprland waybar kitty rofi-wayland gtklock waypaper-git swww dunst firefox clipse
+yay -S hyprland hyprlock xdg-desktop-portal-gtk xdg-desktop-portal-hyprland waybar kitty rofi-wayland gtklock waypaper-git swww dunst firefox clipse
 ```
 ### Waypaper
 
