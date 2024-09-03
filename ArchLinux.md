@@ -416,7 +416,7 @@ yay -S neovim wl-clipboard
 ### Информация о системе
 
 ```
-neofetch pfetch macchina
+neofetch pfetch-rs macchina
 ```
 ### Настройка персонализации
 
