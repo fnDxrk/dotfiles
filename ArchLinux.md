@@ -390,7 +390,7 @@ yay -S gnome-disk-utility qdiskinfo kdiskmark
 ### Проводник
 
 ```
-yay -S thunar thunar-volman thunar-media-tags-plugin thunar-archive-plugin gvfs gvfs-mtp udisks2 udiskie
+yay -S thunar thunar-volman tumbler ffmpegthumbnailer thunar-media-tags-plugin thunar-archive-plugin gvfs gvfs-mtp udisks2 udiskie
 
 ~/.config/hypr/hyprland.conf
 ------------------------------------------------------------------------------
