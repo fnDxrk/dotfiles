@@ -426,6 +426,22 @@ yay -S nwg-look qt6ct
 # nwg-look --- GTK-приложения
 # qt6ct --- Qt-приложения
 ```
+### MIME Applications (Приложения по умолчанию)
+
+Список приложений по умолчанию - `/usr/share/applications/mimeinfo.cache`
+
+Пользовательский MIME-файл может находится в следующих местах :
+```
+~/.config/mimeapps.list
+/usr/share/applications/mimeapps.list
+```
+
+Для того, чтобы настроить приложение по умолчанию используется утилита `gio` :
+```
+gio mime inode/directory org.gnome.Nautilus.desktop
+```
+
+`inode/diretory` - MIME-переменная, которая отвечает файловый менеджер по умолчанию.
 ### Игры
 
 ```
