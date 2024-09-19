@@ -29,5 +29,9 @@ require("lazy").setup({
     }
 },
 {'nvim-treesitter/nvim-treesitter'},
-{'neovim/nvim-lspconfig'}
+{'neovim/nvim-lspconfig'},
+{'williamboman/mason.nvim'},
+{'nvimtools/none-ls.nvim'}, 
+{'hrsh7th/cmp-nvim-lsp'},{'hrsh7th/cmp-buffer'}, {'hrsh7th/cmp-path'},
+{'hrsh7th/cmp-cmdline'}, {'hrsh7th/nvim-cmp'}
 })
