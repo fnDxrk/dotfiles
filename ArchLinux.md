@@ -392,10 +392,19 @@ yay -S gnome-disk-utility qdiskinfo kdiskmark
 ```
 yay -S thunar thunar-volman tumbler ffmpegthumbnailer thunar-media-tags-plugin thunar-archive-plugin gvfs gvfs-mtp udisks2 udiskie
 
+yay -S nautilus gvfs gvfs-mtp udisks2 udiskie
+
 ~/.config/hypr/hyprland.conf
 ------------------------------------------------------------------------------
 exec-once = udiskie &
 ------------------------------------------------------------------------------
+```
+### Nautilus
+
+Сортировка файлов по типу по умолчанию :
+
+```
+gsettings set org.gnome.nautilus.preferences default-sort-order 'type'
 ```
 ### Архивы
 
@@ -520,4 +529,4 @@ systemctl status --user spoof-dpi.service
 
 Теперь нужно настроить Firefox. 
 Переходим по следующему пути : Настройки > Основные > Настройки сети > Настроить Настраиваем так, как на скриншоте ниже :
-![[2024-08-15-232501_hyprshot.png]]
+![[firefox_net.png]]
