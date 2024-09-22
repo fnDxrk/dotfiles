@@ -5,6 +5,7 @@ require('core.mappings')
 
 -- Plugins
 require('plugins.neotree')
+require('plugins.lualine')
 require('plugins.treesitter')
 require('plugins.mason')
 require('plugins.lsp')

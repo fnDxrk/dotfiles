@@ -22,11 +22,13 @@ require("lazy").setup({
     "nvim-neo-tree/neo-tree.nvim",
     branch = "v3.x",
     dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-tree/nvim-web-devicons", 
-      "MunifTanjim/nui.nvim",
-      "3rd/image.nvim", 
+      "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons", 
+      "MunifTanjim/nui.nvim", "s1n7ax/nvim-window-picker"
     }
+},
+{
+    'nvim-lualine/lualine.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' }
 },
 {'nvim-treesitter/nvim-treesitter'},
 {'neovim/nvim-lspconfig'},
