@@ -37,24 +37,27 @@ local cmp = require'cmp'
         end, {"i", "s"})
     }),
     sources = cmp.config.sources({
-      { name = 'nvim_lsp' },
-      { name = 'vsnip' }, -- For vsnip users.
-    }, {
-      { name = 'buffer' },
+      {
+        name = "nvim_lsp",
+        -- Disable source "Text"
+        entry_filter = function(entry)
+        return require("cmp.types").lsp.CompletionItemKind[entry:get_kind()] ~= "Text"
+        end,
+      }, 
     })
   })
 
-  -- Set configuration for specific filetype.
-  cmp.setup.filetype('gitcommit', {
+ -- Set configuration for specific filetype.
+  --[[ cmp.setup.filetype('gitcommit', {
     sources = cmp.config.sources({
       { name = 'git' },
     }, {
       { name = 'buffer' },
     })
  })
- -- require("cmp_git").setup()
-
-  -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
+ require("cmp_git").setup() ]]-- 
+  
+ -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
   cmp.setup.cmdline({ '/', '?' }, {
     mapping = cmp.mapping.preset.cmdline(),
     sources = {

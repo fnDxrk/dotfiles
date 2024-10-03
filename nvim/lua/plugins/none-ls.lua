@@ -5,8 +5,9 @@ null_ls.setup({
     sources = {
         null_ls.builtins.formatting.stylua,
         null_ls.builtins.completion.spell,
+        -- null_ls.builtins.formatting.cmake_format,
         null_ls.builtins.formatting.clang_format.with({
-            extra_args = {"--style=Mozilla"}, 
+            extra_args = {"--style=WebKit"}, 
         }),
     },
     on_attach = function(client, bufnr)
