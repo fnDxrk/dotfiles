@@ -34,6 +34,11 @@ require("lazy").setup({
       'nvim-telescope/telescope.nvim', 
       tag = '0.1.8'
   },
+  {
+    'windwp/nvim-autopairs',
+    event = "InsertEnter",
+    config = true
+  },
   {'nvim-treesitter/nvim-treesitter'},
   {'neovim/nvim-lspconfig'},
   {'williamboman/mason.nvim'},

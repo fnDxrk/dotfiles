@@ -4,6 +4,7 @@ require('core.plugins')
 require('core.mappings')
 
 -- Plugins
+require('plugins.autopairs')
 require('plugins.neotree')
 require('plugins.lualine')
 require('plugins.treesitter')
