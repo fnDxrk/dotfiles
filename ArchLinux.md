@@ -498,6 +498,10 @@ Selected GPU 0: AMD Radeon 780M (RADV GFX1103_R1), type: IntegratedGpu
 `Steam -> Настройки -> Совместимость -> Proton-7.0-6`
 ### Обход блокировки YouTube
 
+#### SpoofDPI
+
+>[!fail] На данный момент перестал работать
+
 > SpoofDPI - это простое и быстрое ПО, созданное для обхода **Deep Packet Inspection**
 
 ```
@@ -530,3 +534,151 @@ systemctl status --user spoof-dpi.service
 Теперь нужно настроить Firefox. 
 Переходим по следующему пути : Настройки > Основные > Настройки сети > Настроить Настраиваем так, как на скриншоте ниже :
 ![[firefox_net.png]]
+#### zapret
+
+```
+git clone https://github.com/bol-van/zapret.git
+./install_easy.sh
+```
+
+##### Конфиг :
+```
+#TMPDIR=/opt/zapret/tmp
+
+#WS_USER=nobody
+
+FWTYPE=iptables
+
+SET_MAXELEM=522288
+
+IPSET_OPT="hashsize 262144 maxelem $SET_MAXELEM"
+
+#IPSET_HOOK="/etc/zapret.ipset.hook"
+
+IP2NET_OPT4="--prefix-length=22-30 --v4-threshold=3/4"
+IP2NET_OPT6="--prefix-length=56-64 --v6-threshold=5"
+
+AUTOHOSTLIST_RETRANS_THRESHOLD=3
+AUTOHOSTLIST_FAIL_THRESHOLD=3
+AUTOHOSTLIST_FAIL_TIME=60
+AUTOHOSTLIST_DEBUGLOG=0
+
+MDIG_THREADS=30
+
+GZIP_LISTS=1
+
+#LISTS_RELOAD="pfctl -f /etc/pf.conf"
+
+#HTTP_PORTS=80-81,85
+#HTTPS_PORTS=443,500-501
+#QUIC_PORTS=443,444
+
+MODE=nfqws
+MODE_HTTP=1
+MODE_HTTP_KEEPALIVE=0
+MODE_HTTPS=1
+MODE_QUIC=1
+MODE_FILTER=none
+
+DESYNC_MARK=0x40000000
+DESYNC_MARK_POSTNAT=0x20000000
+NFQWS_OPT_DESYNC="--dpi-desync=fake,disorder2 --dpi-desync-split-pos=1 --dpi-desync-ttl=0 --dpi-desync-fooling=md5sig,badsum --dpi-desync-repeats=6 --dpi-desync-any-protocol --dpi-desync-cutoff=d4 --dpi-desync-fake-tls=/opt/zapret/files/fake/tls_clienthello_www_google_com.bin"
+#NFQWS_OPT_DESYNC_SUFFIX=
+#NFQWS_OPT_DESYNC_HTTP=
+#NFQWS_OPT_DESYNC_HTTP_SUFFIX=
+#NFQWS_OPT_DESYNC_HTTPS=
+#NFQWS_OPT_DESYNC_HTTPS_SUFFIX=
+#NFQWS_OPT_DESYNC_HTTP6=
+#NFQWS_OPT_DESYNC_HTTP6_SUFFIX=
+#NFQWS_OPT_DESYNC_HTTPS6=
+#NFQWS_OPT_DESYNC_HTTPS6_SUFFIX=
+NFQWS_OPT_DESYNC_QUIC="--dpi-desync=fake --dpi-desync-repeats=6 --dpi-desync-ttl=0 --dpi-desync-any-protocol --dpi-desync-cutoff=d4 --dpi-desync-fooling=md5sig,badsum --dpi-desync-fake-quic=/opt/zapret/files/fake/quic_initial_google_com.bin"
+#NFQWS_OPT_DESYNC_QUIC_SUFFIX=
+#NFQWS_OPT_DESYNC_QUIC6=
+#NFQWS_OPT_DESYNC_QUIC6_SUFFIX=
+
+TPWS_OPT="--hostspell=HOST --split-http-req=method --split-pos=3 --oob"
+#TPWS_OPT_SUFFIX="--mss 88"
+
+FLOWOFFLOAD=donttouch
+
+#OPENWRT_LAN="lan lan2 lan3"
+
+#OPENWRT_WAN4="wan vpn"
+#OPENWRT_WAN6="wan6 vpn6"
+
+#IFACE_LAN=eth0
+IFACE_WAN=wlo1
+#IFACE_WAN6="ipsec0 wireguard0 he_net"
+
+INIT_APPLY_FW=1
+
+#INIT_FW_PRE_UP_HOOK="/etc/firewall.zapret.hook.pre_up"
+#INIT_FW_POST_UP_HOOK="/etc/firewall.zapret.hook.post_up"
+#INIT_FW_PRE_DOWN_HOOK="/etc/firewall.zapret.hook.pre_down"
+#INIT_FW_POST_DOWN_HOOK="/etc/firewall.zapret.hook.post_down"
+
+#DISABLE_IPV4=1
+
+DISABLE_IPV6=0
+
+GETLIST=get_user.sh
+```
+
+##### get_user.sh :
+```
+rutracker.cc
+googleapis.com
+googleusercontent.com
+googlevideo.com
+gstatic.com
+nhacmp3youtube.com
+www.youtube.com
+youtu.be
+youtube.com
+youtubei.googleapis.com
+yt4.ggpht.com
+ytimg.com
+ytimg.l.google.com
+x.com
+twimg.com
+t.co
+twitter.com
+rutor.info
+rutracker.org
+instagram.com
+cdninstagram.com
+ig.me
+donmai.us
+facebook.com
+fbcdn.net
+facebook.net
+fbsbx.com
+fbpigeon.com
+fb.com
+fb.gg
+discord.com
+gateway.discord.gg
+cdn.discordapp.com
+discordapp.net
+discordapp.com
+discord.gg
+media.discordapp.net
+images-ext-1.discordapp.net
+www.discord.com
+www.discord.app
+discord.app
+*.discord.com
+*.discord.gg
+*.discordapp.com
+*.discordapp.net
+discord.media
+*.discord.media
+discordcdn.com
+discord.dev
+discord.new
+discord.gift
+discordstatus.com
+dis.gd
+discord.com
+```
