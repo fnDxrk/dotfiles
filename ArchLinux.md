@@ -541,7 +541,7 @@ git clone https://github.com/bol-van/zapret.git
 ./install_easy.sh
 ```
 
-##### Конфиг :
+##### Конфиг
 ```
 #TMPDIR=/opt/zapret/tmp
 
@@ -571,7 +571,7 @@ GZIP_LISTS=1
 
 #HTTP_PORTS=80-81,85
 #HTTPS_PORTS=443,500-501
-#QUIC_PORTS=443,444
+QUIC_PORTS=443,444,50000-65535
 
 MODE=nfqws
 MODE_HTTP=1
@@ -582,6 +582,7 @@ MODE_FILTER=none
 
 DESYNC_MARK=0x40000000
 DESYNC_MARK_POSTNAT=0x20000000
+
 NFQWS_OPT_DESYNC="--dpi-desync=fake,disorder2 --dpi-desync-split-pos=1 --dpi-desync-ttl=0 --dpi-desync-fooling=md5sig,badsum --dpi-desync-repeats=6 --dpi-desync-any-protocol --dpi-desync-cutoff=d4 --dpi-desync-fake-tls=/opt/zapret/files/fake/tls_clienthello_www_google_com.bin"
 #NFQWS_OPT_DESYNC_SUFFIX=
 #NFQWS_OPT_DESYNC_HTTP=
@@ -593,7 +594,7 @@ NFQWS_OPT_DESYNC="--dpi-desync=fake,disorder2 --dpi-desync-split-pos=1 --dpi-des
 #NFQWS_OPT_DESYNC_HTTPS6=
 #NFQWS_OPT_DESYNC_HTTPS6_SUFFIX=
 NFQWS_OPT_DESYNC_QUIC="--dpi-desync=fake --dpi-desync-repeats=6 --dpi-desync-ttl=0 --dpi-desync-any-protocol --dpi-desync-cutoff=d4 --dpi-desync-fooling=md5sig,badsum --dpi-desync-fake-quic=/opt/zapret/files/fake/quic_initial_google_com.bin"
-#NFQWS_OPT_DESYNC_QUIC_SUFFIX=
+NFQWS_OPT_DESYNC_QUIC_SUFFIX="--dpi-desync=fake,tamper --dpi-desync-any-protocol"
 #NFQWS_OPT_DESYNC_QUIC6=
 #NFQWS_OPT_DESYNC_QUIC6_SUFFIX=
 
@@ -625,7 +626,7 @@ DISABLE_IPV6=0
 GETLIST=get_user.sh
 ```
 
-##### get_user.sh :
+##### get_user.sh
 ```
 rutracker.cc
 googleapis.com
