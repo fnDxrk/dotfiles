@@ -498,51 +498,22 @@ Selected GPU 0: AMD Radeon 780M (RADV GFX1103_R1), type: IntegratedGpu
 
 `Steam -> Настройки -> Совместимость -> Proton-7.0-6`
 ### Обход блокировки YouTube
-
-#### SpoofDPI
-
->[!fail] На данный момент перестал работать
-
-> SpoofDPI - это простое и быстрое ПО, созданное для обхода **Deep Packet Inspection**
-
-```
-yay -S spoof-dpi-bin
-```
-
-Создадим пользовательский unit, чтобы не вводить команду каждый раз после запуска системы :
-
-```
-~/.config/systemd/user/spoof-dpi.service
-------------------------------------------------------------------------------
-[Unit]
-Description=SpoofDPI
-
-[Service]
-ExecStart=spoof-dpi
-
-[Install]
-WantedBy=default.target
-------------------------------------------------------------------------------
-systemctl enable --now --user spoof-dpi.service
-```
-
-Перезагружаем систему и проверяем работоспособность unit'а :
-
-```
-systemctl status --user spoof-dpi.service
-```
-
-Теперь нужно настроить Firefox. 
-Переходим по следующему пути : Настройки > Основные > Настройки сети > Настроить Настраиваем так, как на скриншоте ниже :
-![[firefox_net.png]]
 #### zapret
 ##### Установка
 ```
 git clone https://github.com/bol-van/zapret.git
-./install_easy.sh
+cd zapret
 ```
+
+Запускаем `install_easy.sh` и жмём на всё ENTER.
 ##### Конфиг
-###### `/opt/zapret/config`
+
+1. Копируем скрипт для работы Discord в директорию
+```
+sudo cp /opt/zapret/init.d/sysv/custom.d.examples/50-discord /opt/zapret/init.d/sysv/custom.d/50-discord
+```
+
+2. Копируем конфиг ниже в `/opt/zapret/config`
 ```
 # this file is included from init scripts
 # change values here
@@ -555,6 +526,9 @@ git clone https://github.com/bol-van/zapret.git
 
 # override firewall type : iptables,nftables,ipfw
 FWTYPE=iptables
+# nftables only : set this to 0 to use pre-nat mode. default is post-nat.
+# pre-nat mode disables some bypass techniques for forwarded traffic but allows to see client IP addresses in debug log
+#POSTNAT=0
 
 # options for ipsets
 # maximum number of elements in sets. also used for nft sets
@@ -586,59 +560,60 @@ GZIP_LISTS=1
 # set to "-" to disable reload
 #LISTS_RELOAD="pfctl -f /etc/pf.conf"
 
-# override ports
-#HTTP_PORTS=80-81,85
-#HTTPS_PORTS=443,500-501
-#QUIC_PORTS=443,444
-DISCORD_PORTS=50000-65535
-DISCORD_SUBNETS="66.22.196.0/22 66.22.200.0/21 66.22.208.0/20 66.22.224.0/22 66.22.230.0/23 66.22.232.0/21 66.22.240.0/21 66.22.248.0/24"
-
-# CHOOSE OPERATION MODE
-# MODE : nfqws,tpws,tpws-socks,filter,custom
-# nfqws : nfqws for dpi desync
-# tpws : tpws transparent mode
-# tpws-socks : tpws socks mode
-# filter : no daemon, just create ipset or download hostlist
-# custom : custom mode. should modify custom init script and add your own code
-MODE=custom
-# apply fooling to http
-MODE_HTTP=1
-# for nfqws only. support http keep alives. enable only if DPI checks for http request in any outgoing packet
-MODE_HTTP_KEEPALIVE=0
-# apply fooling to https
-MODE_HTTPS=1
-# apply fooling to quic
-MODE_QUIC=1
-# none,ipset,hostlist,autohostlist
-MODE_FILTER=hostlist
-
-# CHOOSE NFQWS DAEMON OPTIONS for DPI desync mode. run "nfq/nfqws --help" for option list
-# SUFFIX VARS define additional lower priority desync profile. it's required if MODE_FILTER=hostlist and strategy has hostlist-incompatible 0-phase desync methods (syndata,wssize)
+# mark bit used by nfqws to prevent loop
 DESYNC_MARK=0x40000000
 DESYNC_MARK_POSTNAT=0x20000000
 
-NFQWS_OPT_DESYNC_DISCORD="--dpi-desync=fake --dpi-desync-repeats=6 --dpi-desync-any-protocol"
-NFQWS_OPT_DESYNC="--dpi-desync=fake,disorder2  --dpi-desync-repeats=20 --dpi-desync-ttl=12 --dpi-desync-fooling=md5sig --dpi-desync-fake-tls=/opt/zapret/files/fake/tls_clienthello_www_google_com.bin"
+TPWS_SOCKS_ENABLE=1
+# tpws socks listens on this port on localhost and LAN interfaces
+TPPORT_SOCKS=987
+# use <HOSTLIST> and <HOSTLIST_NOAUTO> placeholders to engage standard hostlists and autohostlist in ipset dir
+# hostlist markers are replaced to empty string if MODE_FILTER does not satisfy
+# <HOSTLIST_NOAUTO> appends ipset/zapret-hosts-auto.txt as normal list
+TPWS_SOCKS_OPT="
+--filter-tcp=80 --methodeol <HOSTLIST> --new
+--filter-tcp=443 --split-tls=sni --disorder <HOSTLIST>
+"
 
-NFQWS_OPT_DESYNC_QUIC="--dpi-desync=fake,disorder2 --dpi-desync-repeats=20 --dpi-desync-fooling=md5sig --dpi-desync-fake-quic=/opt/zapret/files/fake/quic_initial_www_google_com.bin"
+TPWS_ENABLE=0
+TPWS_PORTS=80,443
+# use <HOSTLIST> and <HOSTLIST_NOAUTO> placeholders to engage standard hostlists and autohostlist in ipset dir
+# hostlist markers are replaced to empty string if MODE_FILTER does not satisfy
+# <HOSTLIST_NOAUTO> appends ipset/zapret-hosts-auto.txt as normal list
+TPWS_OPT="
+--filter-tcp=80 --methodeol <HOSTLIST> --new
+--filter-tcp=443 --split-tls=sni --disorder <HOSTLIST>
+"
 
-#NFQWS_OPT_DESYNC_SUFFIX=
-#NFQWS_OPT_DESYNC_HTTP=
-#NFQWS_OPT_DESYNC_HTTP_SUFFIX=
-#NFQWS_OPT_DESYNC_HTTPS=
-#NFQWS_OPT_DESYNC_HTTPS_SUFFIX=
-#NFQWS_OPT_DESYNC_HTTP6=
-#NFQWS_OPT_DESYNC_HTTP6_SUFFIX=
-#NFQWS_OPT_DESYNC_HTTPS6=
-#NFQWS_OPT_DESYNC_HTTPS6_SUFFIX=
-#NFQWS_OPT_DESYNC_QUIC_SUFFIX=
-#NFQWS_OPT_DESYNC_QUIC6=
-#NFQWS_OPT_DESYNC_QUIC6_SUFFIX=
+NFQWS_ENABLE=1
+# redirect outgoing traffic with connbytes limiter applied in both directions.
+NFQWS_PORTS_TCP=80,443
+NFQWS_PORTS_UDP=443
+# PKT_OUT means connbytes dir original
+# PKT_IN means connbytes dir reply
+# this is --dpi-desync-cutoff=nX kernel mode implementation for linux. it saves a lot of CPU.
+NFQWS_TCP_PKT_OUT=$((6+$AUTOHOSTLIST_RETRANS_THRESHOLD))
+NFQWS_TCP_PKT_IN=3
+NFQWS_UDP_PKT_OUT=$((6+$AUTOHOSTLIST_RETRANS_THRESHOLD))
+NFQWS_UDP_PKT_IN=0
+# redirect outgoing traffic without connbytes limiter and incoming with connbytes limiter
+# normally it's needed only for stateless DPI that matches every packet in a single TCP session
+# typical example are plain HTTP keep alives
+# this mode can be very CPU consuming. enable with care !
+#NFQWS_PORTS_TCP_KEEPALIVE=80
+#NFQWS_PORTS_UDP_KEEPALIVE=
+# use <HOSTLIST> and <HOSTLIST_NOAUTO> placeholders to engage standard hostlists and autohostlist in ipset dir
+# hostlist markers are replaced to empty string if MODE_FILTER does not satisfy
+# <HOSTLIST_NOAUTO> appends ipset/zapret-hosts-auto.txt as normal list
+NFQWS_OPT="
+--filter-tcp=80,443 --dpi-desync=fake --dpi-desync-ttl=5
+--filter-tcp=80 --dpi-desync=fake,split2 --dpi-desync-fooling=md5sig <HOSTLIST> --new
+--filter-tcp=443 --dpi-desync=fake,disorder2 --dpi-desync-fooling=md5sig <HOSTLIST> --new
+--filter-udp=443 --dpi-desync=fake --dpi-desync-repeats=6 <HOSTLIST_NOAUTO>
+"
 
-# CHOOSE TPWS DAEMON OPTIONS. run "tpws/tpws --help" for option list
-# SUFFIX VARS define additional lower priority desync profile. it's required if MODE_FILTER=hostlist and strategy has hostlist-incompatible 0-phase desync methods (mss)
-TPWS_OPT="--hostspell=HOST --split-http-req=method --split-pos=3 --oob"
-#TPWS_OPT_SUFFIX="--mss 88"
+# none,ipset,hostlist,autohostlist
+MODE_FILTER=none
 
 # openwrt only : donttouch,none,software,hardware
 FLOWOFFLOAD=donttouch
@@ -654,8 +629,8 @@ FLOWOFFLOAD=donttouch
 # or leave them commented if its not router
 # it's possible to specify multiple interfaces like this : IFACE_LAN="eth0 eth1 eth2"
 # if IFACE_WAN6 is not defined it take the value of IFACE_WAN
-#IFACE_LAN=eth0
-IFACE_WAN=wlo1
+#IFACE_LAN=
+#IFACE_WAN=
 #IFACE_WAN6="ipsec0 wireguard0 he_net"
 
 # should start/stop command of init scripts apply firewall rules ?
@@ -670,148 +645,15 @@ INIT_APPLY_FW=1
 # do not work with ipv4
 #DISABLE_IPV4=1
 # do not work with ipv6
-DISABLE_IPV6=0
+DISABLE_IPV6=1
 
 # select which init script will be used to get ip or host list
 # possible values : get_user.sh get_antizapret.sh get_combined.sh get_reestr.sh get_hostlist.sh
 # comment if not required
-# GETLIST=
+#GETLIST=
 ```
 
-###### `/opt/zapret/ipset/zapret-hosts-user.txt`
+3. Перезапускаем службы zapret
 ```
-nonexistent.domain
-rutracker.cc
-googleapis.com
-googleusercontent.com
-googlevideo.com
-gstatic.com
-nhacmp3youtube.com
-www.youtube.com
-youtu.be
-youtube.com
-youtubei.googleapis.com
-yt4.ggpht.com
-ytimg.com
-ytimg.l.google.com
-x.com
-twimg.com
-t.co
-twitter.com
-rutor.info
-rutracker.org
-instagram.com
-cdninstagram.com
-ig.me
-donmai.us
-facebook.com
-fbcdn.net
-facebook.net
-fbsbx.com
-fbpigeon.com
-fb.com
-fb.gg
-
-discord-attachments-uploads-prd.storage.googleapis.com
-dis.gd
-discord.co
-discord.com
-discord.design
-discord.dev
-discord.gg
-discord.gift
-discord.gifts
-discord.media
-discord.new
-discord.store
-discord.tools
-discordapp.com
-discordapp.net
-discordmerch.com
-discordpartygames.com
-discord-activities.com
-discordactivities.com
-discordsays.com
-discordcdn.com
-discordstatus.com
-```
-###### `/opt/zapret/init.d/sysv/custom`
-```
-# this custom script in addition to MODE=nfqws runs desync of some udp packets to discord subnet
-# need to add to config :
-# NFQWS_OPT_DESYNC_DISCORD="--dpi-desync=fake --dpi-desync-repeats=6 --dpi-desync-any-protocol"
-# DISCORD_PORTS=50000-65535
-# DISCORD_SUBNETS="66.22.196.0/22 66.22.200.0/21 66.22.208.0/20 66.22.224.0/22 66.22.230.0/23 66.22.232.0/21 66.22.240.0/21 66.22.248.0/24"
-
-QNUM_DISCORD=$(($QNUM+50))
-DISCORD_SET_NAME=discord
-
-zapret_custom_daemons()
-{
-	# $1 - 1 - run, 0 - stop
-
-	local MODE_OVERRIDE=nfqws
-	local opt
-
-	zapret_do_daemons $1
-
-	opt="--qnum=$QNUM_DISCORD $NFQWS_OPT_BASE $NFQWS_OPT_DESYNC_DISCORD"
-	do_nfqws $1 200 "$opt"
-}
-
-zapret_custom_firewall()
-{
-	# $1 - 1 - run, 0 - stop
-
-	local MODE_OVERRIDE=nfqws
-	local f
-	local first_packets_only="$ipt_connbytes 1:3"
-	local desync="-m mark ! --mark $DESYNC_MARK/$DESYNC_MARK"
-	local DISCORD_PORTS_IPT=$(replace_char - : $DISCORD_PORTS)
-	local dest_set="-m set --match-set $DISCORD_SET_NAME dst"
-	local subnet
-
-	zapret_do_firewall_rules_ipt $1
-
-	local DISABLE_IPV6=1
-
-	[ "$1" = 1 ] && {
-		ipset create $DISCORD_SET_NAME hash:net hashsize 4096 maxelem 1024 2>/dev/null
-		ipset flush $DISCORD_SET_NAME
-		for subnet in $DISCORD_SUBNETS; do
-			ipset add $DISCORD_SET_NAME $subnet
-		done
-	}
-
-	f="-p udp -m multiport --dports $DISCORD_PORTS_IPT"
-	fw_nfqws_post $1 "$f $desync $first_packets_only $dest_set" "" $QNUM_DISCORD
-
-	[ "$1" = 1 ] || {
-		ipset destroy $DISCORD_SET_NAME
-	}
-}
-
-zapret_custom_firewall_nft()
-{
-	# stop logic is not required
-
-	local MODE_OVERRIDE=nfqws
-	local f
-	local first_packets_only="$nft_connbytes 1-3"
-	local desync="mark and $DESYNC_MARK == 0"
-	local dest_set="ip daddr @$DISCORD_SET_NAME"
-	local subnets
-
-	zapret_apply_firewall_rules_nft
-
-	local DISABLE_IPV6=1
-
-	make_comma_list subnets $DISCORD_SUBNETS
-	nft_create_set $DISCORD_SET_NAME "type ipv4_addr; size 1024; flags interval;"
-	nft_flush_set $DISCORD_SET_NAME
-	nft_add_set_element $DISCORD_SET_NAME "$subnets"
-
-	f="udp dport {$DISCORD_PORTS}"
-	nft_fw_nfqws_post "$f $desync $first_packets_only $dest_set" "" $QNUM_DISCORD
-}
+systemctl restart zapret.service && systemctl restart zapret-list-update.service
 ```
