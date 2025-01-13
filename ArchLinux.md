@@ -378,6 +378,18 @@ swww_transition_fps = 60
 ```
 yay -S pipewire lib32-pipewire pipewire-alsa pipewire-pulse pavucontrol
 ```
+
+#### Автоматическое переключение звука при подключении нового устройства
+
+```
+/usr/share/pipewire/pipewire-pulse.conf (или ~/.config/pipewire/pipewire.conf)
+--------------------------------------------------------------------------------
+context.exec = [
+    ...
+    { path = "pactl"        args = "load-module module-switch-on-connect" }
+    #{ path = "/usr/bin/sh"  args = "~/.config/pipewire/default.pw" }
+]
+```
 ### Шрифты
 
 ```
