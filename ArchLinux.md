@@ -509,161 +509,218 @@ Selected GPU 0: AMD Radeon 780M (RADV GFX1103_R1), type: IntegratedGpu
 Для работы с игрой нужно поставить правильный Proton :
 
 `Steam -> Настройки -> Совместимость -> Proton-7.0-6`
-### Обход блокировки YouTube
+### Обход блокировки РТК
 #### zapret
 ##### Установка
-```
-git clone https://github.com/bol-van/zapret.git
-cd zapret
-```
 
-Запускаем `install_easy.sh` и жмём на всё ENTER.
+1. Скачиваем последний релиз [zapret](https://github.com/bol-van/zapret/releases)
+2. Распаковываем : 
+	```
+	tar -xf zapret-*.tar.gz
+	```
+3. Запускаем скрипты :
+	```
+	./install_bin.sh
+	./install_prereq.sh
+	```
+4. Запускаем скрипт установки и отвечаем на всё по умолчанию :
+	```
+	./install_easy.sh
+   ```
 ##### Конфиг
 
-1. Копируем скрипт для работы Discord в директорию
-```
-sudo cp /opt/zapret/init.d/sysv/custom.d.examples/50-discord /opt/zapret/init.d/sysv/custom.d/50-discord
-```
+1. Копируем скрипт для работы Discord :
+	```
+	sudo cp /opt/zapret/init.d/custom.d.examples.linux/50-discord /opt/zapret/init.d/sysv/custom.d/
+	```
 
-2. Копируем конфиг ниже в `/opt/zapret/config`
-```
-# this file is included from init scripts
-# change values here
+2. Домены (на всякий случай) :
+   `/opt/zapret/ipset/list-general.txt`
+	```
+	googlevideo.com
+	youtu.be
+	youtube.com
+	youtubei.googleapis.com
+	youtubeembeddedplayer.googleapis.com
+	ytimg.l.google.com
+	ytimg.com
+	jnn-pa.googleapis.com
+	youtube-nocookie.com
+	youtube-ui.l.google.com
+	yt-video-upload.l.google.com
+	wide-youtube.l.google.com
+	youtubekids.com
+	ggpht.com
+	discord.com
+	gateway.discord.gg
+	cdn.discordapp.com
+	discordapp.net
+	discordapp.com
+	discord.gg
+	media.discordapp.net
+	images-ext-1.discordapp.net
+	discord.app
+	discord.media
+	discordcdn.com
+	discord.dev
+	discord.new
+	discord.gift
+	discordstatus.com
+	dis.gd
+	discord.co
+	discord-attachments-uploads-prd.storage.googleapis.com
+	7tv.app
+	7tv.io
+	10tv.app
+	cloudflare-ech.com
+	```
 
-# can help in case /tmp has not enough space
-#TMPDIR=/opt/zapret/tmp
+2. Копируем конфиг ниже в `/opt/zapret/config` :
+	```
+	# this file is included from init scripts
+	# change values here
+	
+	# can help in case /tmp has not enough space
+	#TMPDIR=/opt/zapret/tmp
+	
+	# redefine user for zapret daemons. required on Keenetic
+	#WS_USER=nobody
+	
+	# override firewall type : iptables,nftables,ipfw
+	FWTYPE=iptables
+	# nftables only : set this to 0 to use pre-nat mode. default is post-nat.
+	# pre-nat mode disables some bypass techniques for forwarded traffic but allows to see client IP addresses in debug log
+	#POSTNAT=0
+	
+	# options for ipsets
+	# maximum number of elements in sets. also used for nft sets
+	SET_MAXELEM=522288
+	# too low hashsize can cause memory allocation errors on low RAM systems , even if RAM is enough
+	# too large hashsize will waste lots of RAM
+	IPSET_OPT="hashsize 262144 maxelem $SET_MAXELEM"
+	# dynamically generate additional ip. $1 = ipset/nfset/table name
+	#IPSET_HOOK="/etc/zapret.ipset.hook"
+	
+	# options for ip2net. "-4" or "-6" auto added by ipset create script
+	IP2NET_OPT4="--prefix-length=22-30 --v4-threshold=3/4"
+	IP2NET_OPT6="--prefix-length=56-64 --v6-threshold=5"
+	# options for auto hostlist
+	AUTOHOSTLIST_RETRANS_THRESHOLD=3
+	AUTOHOSTLIST_FAIL_THRESHOLD=3
+	AUTOHOSTLIST_FAIL_TIME=60
+	# 1 = debug autohostlist positives to ipset/zapret-hosts-auto-debug.log
+	AUTOHOSTLIST_DEBUGLOG=0
+	
+	# number of parallel threads for domain list resolves
+	MDIG_THREADS=30
+	
+	# ipset/*.sh can compress large lists
+	GZIP_LISTS=1
+	# command to reload ip/host lists after update
+	# comment or leave empty for auto backend selection : ipset or ipfw if present
+	# on BSD systems with PF no auto reloading happens. you must provide your own command
+	# set to "-" to disable reload
+	#LISTS_RELOAD="pfctl -f /etc/pf.conf"
+	
+	# mark bit used by nfqws to prevent loop
+	DESYNC_MARK=0x40000000
+	DESYNC_MARK_POSTNAT=0x20000000
+	
+	TPWS_SOCKS_ENABLE=0
+	# tpws socks listens on this port on localhost and LAN interfaces
+	TPPORT_SOCKS=987
+	# use <HOSTLIST> and <HOSTLIST_NOAUTO> placeholders to engage standard hostlists and autohostlist in ipset dir
+	# hostlist markers are replaced to empty string if MODE_FILTER does not satisfy
+	# <HOSTLIST_NOAUTO> appends ipset/zapret-hosts-auto.txt as normal list
+	TPWS_SOCKS_OPT="
+	--filter-tcp=80 --methodeol <HOSTLIST> --new
+	--filter-tcp=443 --split-pos=1,midsld --disorder <HOSTLIST>
+	"
+	
+	TPWS_ENABLE=0
+	TPWS_PORTS=80,443
+	# use <HOSTLIST> and <HOSTLIST_NOAUTO> placeholders to engage standard hostlists and autohostlist in ipset dir
+	# hostlist markers are replaced to empty string if MODE_FILTER does not satisfy
+	# <HOSTLIST_NOAUTO> appends ipset/zapret-hosts-auto.txt as normal list
+	TPWS_OPT="
+	--filter-tcp=80 --methodeol <HOSTLIST> --new
+	--filter-tcp=443 --split-pos=1,midsld --disorder <HOSTLIST>
+	"
+	
+	NFQWS_ENABLE=1
+	# redirect outgoing traffic with connbytes limiter applied in both directions.
+	NFQWS_PORTS_TCP=80,443
+	NFQWS_PORTS_UDP=443
+	# PKT_OUT means connbytes dir original
+	# PKT_IN means connbytes dir reply
+	# this is --dpi-desync-cutoff=nX kernel mode implementation for linux. it saves a lot of CPU.
+	NFQWS_TCP_PKT_OUT=$((6+$AUTOHOSTLIST_RETRANS_THRESHOLD))
+	NFQWS_TCP_PKT_IN=3
+	NFQWS_UDP_PKT_OUT=$((6+$AUTOHOSTLIST_RETRANS_THRESHOLD))
+	NFQWS_UDP_PKT_IN=0
+	# redirect outgoing traffic without connbytes limiter and incoming with connbytes limiter
+	# normally it's needed only for stateless DPI that matches every packet in a single TCP session
+	# typical example are plain HTTP keep alives
+	# this mode can be very CPU consuming. enable with care !
+	#NFQWS_PORTS_TCP_KEEPALIVE=80
+	#NFQWS_PORTS_UDP_KEEPALIVE=
+	# use <HOSTLIST> and <HOSTLIST_NOAUTO> placeholders to engage standard hostlists and autohostlist in ipset dir
+	# hostlist markers are replaced to empty string if MODE_FILTER does not satisfy
+	# <HOSTLIST_NOAUTO> appends ipset/zapret-hosts-auto.txt as normal list
+	NFQWS_OPT="
+	# UDP 443
+	--filter-udp=443 --hostlist=/opt/zapret/ipset/list-general.txt --dpi-desync=fake --dpi-desync-repeats=6 --dpi-desync-fake-quic=/opt/zapret/files/fake/quic_initial_www_google_com.bin --new
+	# TCP 80
+	--filter-tcp=80 --hostlist=/opt/zapret/ipset/list-general.txt --dpi-desync=fake,split2 --dpi-desync-autottl=2 --dpi-desync-fooling=md5sig --new
+	# TCP 443
+	--filter-tcp=443 --hostlist=/opt/zapret/ipset/list-general.txt --dpi-desync=fake --dpi-desync-repeats=6 --dpi-desync-fooling=md5sig --dpi-desync-fake-tls=/opt/zapret/files/fake/tls_clienthello_www_google_com.bin
+	#--filter-tcp=80 --dpi-desync=fake,multisplit --dpi-desync-split-pos=method+2 --dpi-desync-fooling=md5sig <HOSTLIST> --new
+	#--filter-tcp=443 --dpi-desync=fake,multidisorder --dpi-desync-split-pos=1,midsld --dpi-desync-fooling=badseq,md5sig <HOSTLIST> --new
+	#--filter-udp=443 --dpi-desync=fake --dpi-desync-repeats=6 <HOSTLIST_NOAUTO>
+	"
+	
+	# none,ipset,hostlist,autohostlist
+	MODE_FILTER=hostlist
+	
+	# openwrt only : donttouch,none,software,hardware
+	FLOWOFFLOAD=donttouch
+	
+	# openwrt: specify networks to be treated as LAN. default is "lan"
+	#OPENWRT_LAN="lan lan2 lan3"
+	# openwrt: specify networks to be treated as WAN. default wans are interfaces with default route
+	#OPENWRT_WAN4="wan vpn"
+	#OPENWRT_WAN6="wan6 vpn6"
+	
+	# for routers based on desktop linux and macos. has no effect in openwrt.
+	# CHOOSE LAN and optinally WAN/WAN6 NETWORK INTERFACES
+	# or leave them commented if its not router
+	# it's possible to specify multiple interfaces like this : IFACE_LAN="eth0 eth1 eth2"
+	# if IFACE_WAN6 is not defined it take the value of IFACE_WAN
+	#IFACE_LAN=
+	#IFACE_WAN=
+	#IFACE_WAN6="ipsec0 wireguard0 he_net"
+	
+	# should start/stop command of init scripts apply firewall rules ?
+	# not applicable to openwrt with firewall3+iptables
+	INIT_APPLY_FW=1
+	# firewall apply hooks
+	#INIT_FW_PRE_UP_HOOK="/etc/firewall.zapret.hook.pre_up"
+	#INIT_FW_POST_UP_HOOK="/etc/firewall.zapret.hook.post_up"
+	#INIT_FW_PRE_DOWN_HOOK="/etc/firewall.zapret.hook.pre_down"
+	#INIT_FW_POST_DOWN_HOOK="/etc/firewall.zapret.hook.post_down"
+	
+	# do not work with ipv4
+	#DISABLE_IPV4=1
+	# do not work with ipv6
+	DISABLE_IPV6=1
+	
+	# select which init script will be used to get ip or host list
+	# possible values : get_user.sh get_antizapret.sh get_combined.sh get_reestr.sh get_hostlist.sh
+	# comment if not required
+	#GETLIST=
+	```
 
-# redefine user for zapret daemons. required on Keenetic
-#WS_USER=nobody
-
-# override firewall type : iptables,nftables,ipfw
-FWTYPE=iptables
-# nftables only : set this to 0 to use pre-nat mode. default is post-nat.
-# pre-nat mode disables some bypass techniques for forwarded traffic but allows to see client IP addresses in debug log
-#POSTNAT=0
-
-# options for ipsets
-# maximum number of elements in sets. also used for nft sets
-SET_MAXELEM=522288
-# too low hashsize can cause memory allocation errors on low RAM systems , even if RAM is enough
-# too large hashsize will waste lots of RAM
-IPSET_OPT="hashsize 262144 maxelem $SET_MAXELEM"
-# dynamically generate additional ip. $1 = ipset/nfset/table name
-#IPSET_HOOK="/etc/zapret.ipset.hook"
-
-# options for ip2net. "-4" or "-6" auto added by ipset create script
-IP2NET_OPT4="--prefix-length=22-30 --v4-threshold=3/4"
-IP2NET_OPT6="--prefix-length=56-64 --v6-threshold=5"
-# options for auto hostlist
-AUTOHOSTLIST_RETRANS_THRESHOLD=3
-AUTOHOSTLIST_FAIL_THRESHOLD=3
-AUTOHOSTLIST_FAIL_TIME=60
-# 1 = debug autohostlist positives to ipset/zapret-hosts-auto-debug.log
-AUTOHOSTLIST_DEBUGLOG=0
-
-# number of parallel threads for domain list resolves
-MDIG_THREADS=30
-
-# ipset/*.sh can compress large lists
-GZIP_LISTS=1
-# command to reload ip/host lists after update
-# comment or leave empty for auto backend selection : ipset or ipfw if present
-# on BSD systems with PF no auto reloading happens. you must provide your own command
-# set to "-" to disable reload
-#LISTS_RELOAD="pfctl -f /etc/pf.conf"
-
-# mark bit used by nfqws to prevent loop
-DESYNC_MARK=0x40000000
-DESYNC_MARK_POSTNAT=0x20000000
-
-TPWS_SOCKS_ENABLE=0
-# tpws socks listens on this port on localhost and LAN interfaces
-TPPORT_SOCKS=987
-# use <HOSTLIST> and <HOSTLIST_NOAUTO> placeholders to engage standard hostlists and autohostlist in ipset dir
-# hostlist markers are replaced to empty string if MODE_FILTER does not satisfy
-# <HOSTLIST_NOAUTO> appends ipset/zapret-hosts-auto.txt as normal list
-TPWS_SOCKS_OPT="
---filter-tcp=80 --methodeol <HOSTLIST> --new
---filter-tcp=443 --split-tls=sni --disorder <HOSTLIST>
-"
-
-TPWS_ENABLE=0
-TPWS_PORTS=80,443
-# use <HOSTLIST> and <HOSTLIST_NOAUTO> placeholders to engage standard hostlists and autohostlist in ipset dir
-# hostlist markers are replaced to empty string if MODE_FILTER does not satisfy
-# <HOSTLIST_NOAUTO> appends ipset/zapret-hosts-auto.txt as normal list
-TPWS_OPT="
---filter-tcp=80 --methodeol <HOSTLIST> --new
---filter-tcp=443 --split-tls=sni --disorder <HOSTLIST>
-"
-
-NFQWS_ENABLE=1
-# redirect outgoing traffic with connbytes limiter applied in both directions.
-NFQWS_PORTS_TCP=80,443
-NFQWS_PORTS_UDP=443
-# PKT_OUT means connbytes dir original
-# PKT_IN means connbytes dir reply
-# this is --dpi-desync-cutoff=nX kernel mode implementation for linux. it saves a lot of CPU.
-NFQWS_TCP_PKT_OUT=$((6+$AUTOHOSTLIST_RETRANS_THRESHOLD))
-NFQWS_TCP_PKT_IN=3
-NFQWS_UDP_PKT_OUT=$((6+$AUTOHOSTLIST_RETRANS_THRESHOLD))
-NFQWS_UDP_PKT_IN=0
-# redirect outgoing traffic without connbytes limiter and incoming with connbytes limiter
-# normally it's needed only for stateless DPI that matches every packet in a single TCP session
-# typical example are plain HTTP keep alives
-# this mode can be very CPU consuming. enable with care !
-#NFQWS_PORTS_TCP_KEEPALIVE=80
-#NFQWS_PORTS_UDP_KEEPALIVE=
-# use <HOSTLIST> and <HOSTLIST_NOAUTO> placeholders to engage standard hostlists and autohostlist in ipset dir
-# hostlist markers are replaced to empty string if MODE_FILTER does not satisfy
-# <HOSTLIST_NOAUTO> appends ipset/zapret-hosts-auto.txt as normal list
-NFQWS_OPT="
---filter-tcp=80,443 --dpi-desync=fake,disorder2 --dpi-desync-ttl=1 --dpi-desync-autottl=2 --wssize 1:6 --dpi-desync-fake-tls=0x00000000
---filter-udp=443 --dpi-desync=fake,disorder2 --dpi-desync-ttl=1 --dpi-desync-autottl=2 --wssize 1:6 --dpi-desync-fake-tls=0x00000000
-"
-
-# none,ipset,hostlist,autohostlist
-MODE_FILTER=none
-
-# openwrt only : donttouch,none,software,hardware
-FLOWOFFLOAD=none
-
-# openwrt: specify networks to be treated as LAN. default is "lan"
-#OPENWRT_LAN="lan lan2 lan3"
-# openwrt: specify networks to be treated as WAN. default wans are interfaces with default route
-#OPENWRT_WAN4="wan vpn"
-#OPENWRT_WAN6="wan6 vpn6"
-
-# for routers based on desktop linux and macos. has no effect in openwrt.
-# CHOOSE LAN and optinally WAN/WAN6 NETWORK INTERFACES
-# or leave them commented if its not router
-# it's possible to specify multiple interfaces like this : IFACE_LAN="eth0 eth1 eth2"
-# if IFACE_WAN6 is not defined it take the value of IFACE_WAN
-#IFACE_LAN=
-#IFACE_WAN=
-#IFACE_WAN6="ipsec0 wireguard0 he_net"
-
-# should start/stop command of init scripts apply firewall rules ?
-# not applicable to openwrt with firewall3+iptables
-INIT_APPLY_FW=1
-# firewall apply hooks
-#INIT_FW_PRE_UP_HOOK="/etc/firewall.zapret.hook.pre_up"
-#INIT_FW_POST_UP_HOOK="/etc/firewall.zapret.hook.post_up"
-#INIT_FW_PRE_DOWN_HOOK="/etc/firewall.zapret.hook.pre_down"
-#INIT_FW_POST_DOWN_HOOK="/etc/firewall.zapret.hook.post_down"
-
-# do not work with ipv4
-#DISABLE_IPV4=1
-# do not work with ipv6
-DISABLE_IPV6=1
-
-# select which init script will be used to get ip or host list
-# possible values : get_user.sh get_antizapret.sh get_combined.sh get_reestr.sh get_hostlist.sh
-# comment if not required
-#GETLIST=
-```
-
-3. Перезапускаем службы zapret
-```
-systemctl restart zapret.service && systemctl restart zapret-list-update.service
-```
+3. Перезапускаем службу zapret
+	```
+	systemctl restart zapret.service
+	```
