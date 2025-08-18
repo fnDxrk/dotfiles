@@ -1,0 +1,7 @@
+zsh-users/zsh-autosuggestions
+zsh-users/zsh-syntax-highlighting
+zsh-users/zsh-completions
+Tarrasch/zsh-bd
+#jeffreytse/zsh-vi-mode
+#Aloxaf/fzf-tab
+romkatv/powerlevel10k
