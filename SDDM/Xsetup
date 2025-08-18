@@ -1,0 +1,11 @@
+#!/bin/sh
+# Xsetup - run as root before the login dialog appears
+
+internal=$(xrandr | grep " connected" | grep -E "eDP|LVDS" | sed 's/ .*//' | head -n 1)
+external=$(xrandr | grep " connected" | grep -vE "eDP|LVDS" | sed 's/ .*//' | head -n 1)
+
+if [ -n "$external" ]; then
+    xrandr --output "$external" --auto --primary --output "$internal" --off
+else
+    xrandr --output "$internal" --auto --primary
+fi
