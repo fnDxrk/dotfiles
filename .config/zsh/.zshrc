@@ -23,7 +23,6 @@ setopt GLOB_COMPLETE
 # Completion settings
 autoload -Uz compinit; compinit
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
-zstyle ':completion:*' menu select
 
 # Vim mode
 # bindkey -v
@@ -50,6 +49,10 @@ bindkey '^W' backward-kill-word
 bindkey '^[[H' beginning-of-line
 # End - move cursor to end of line
 bindkey '^[[F' end-of-line
+# Ctrl+Home - move cursor to start of line
+bindkey '^[[1;5H' beginning-of-line
+# Ctrl+End - move cursor to end of line
+bindkey '^[[1;5F' end-of-line
 
 # Ctrl+Left - move cursor to previous word
 bindkey '^[[1;5D' backward-word
