@@ -109,7 +109,7 @@ NFQWS_OPT="
 "
 
 # none,ipset,hostlist,autohostlist
-MODE_FILTER=none
+MODE_FILTER=hostlist
 
 # donttouch,none,software,hardware
 FLOWOFFLOAD=donttouch
