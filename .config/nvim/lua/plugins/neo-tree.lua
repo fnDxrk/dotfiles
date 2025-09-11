@@ -10,6 +10,13 @@ return {
   ---@module 'neo-tree'
   ---@type neotree.Config
   opts = {
+    filesystem = {
+      follow_current_file = {
+        enabled = true,
+        leave_dirs_open = false,
+      },
+      use_libuv_file_watcher = true,
+    },
     event_handlers = {
       {
         event = "file_open_requested",
