@@ -1,13 +1,12 @@
-vim.lsp.config('lua_ls', {
+return {
 	settings = {
 		Lua = {
 			runtime = {
-				version = 'LuaJIT',
+				version = "LuaJIT",
 			},
 			diagnostics = {
 				globals = {
-					'vim',
-					'require'
+					"vim",
 				},
 			},
 			workspace = {
@@ -18,4 +17,4 @@ vim.lsp.config('lua_ls', {
 			},
 		},
 	},
-})
+}
