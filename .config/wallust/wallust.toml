@@ -21,8 +21,15 @@ palette = "softdark16"
 #saturation = 35
 
 [templates]
+# Hyprland
 hypr.template = "hypr.conf"
 hypr.target = "~/.config/hypr/themes/wallust.conf"
 
+# Waybar
+waybar.template = "waybar.css"
+waybar.target = "~/.config/waybar/colors/wallust.css"
+
+
+# Wezterm
 wezterm.template = "wezterm.toml"
 wezterm.target = "~/.config/wezterm/colors/wallust.toml"
