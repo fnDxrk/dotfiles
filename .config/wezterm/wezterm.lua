@@ -1,6 +1,10 @@
 local wezterm = require 'wezterm'
 local config = wezterm.config_builder()
 
+-- Themes
+config.color_scheme = 'wallust'
+config.color_scheme = "wallust"
+
 -- config.color_scheme = 
 config.font = wezterm.font('JetBrains Mono NL', { weight = 'Medium' })
 config.font_size = 12
@@ -9,6 +13,7 @@ config.hide_tab_bar_if_only_one_tab = true
 
 -- Disable notification
 config.window_close_confirmation = 'NeverPrompt'
+
 config.keys = {
   {
     key = 'w',

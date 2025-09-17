@@ -1,0 +1,28 @@
+# full - resized - wal - thumb -  fastresize - kmeans
+backend = "resized"
+
+# lab - labmixed - lch - lchmixed
+color_space = "lch"
+
+# dark - dark16 - darkcomp - darkcomp16
+# light - light16 - lightcomp - lightcomp16
+# harddark - harddark16 - harddarkcomp - harddarkcomp16
+# softdark - softdark16 - softdarkcomp - softdarkcomp16
+# softlight - softlight16 - softlightcomp - softlightcomp16
+palette = "softdark16"
+
+# Should only be enabled when you notice an unreadable contrast frequently happening
+# with your images. The reference color for the contrast is the background color.
+#check_contrast = true
+
+# Color saturation, between [1% and 100%] (OPTIONAL, disabled by default)
+# usually something higher than 50 increases the saturation and below
+# decreases it (on a scheme with strong and vivid colors)
+#saturation = 35
+
+[templates]
+hypr.template = "hypr.conf"
+hypr.target = "~/.config/hypr/themes/wallust.conf"
+
+wezterm.template = "wezterm.toml"
+wezterm.target = "~/.config/wezterm/colors/wallust.toml"
