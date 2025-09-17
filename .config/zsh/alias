@@ -1,0 +1,3 @@
+# eza
+alias ls='eza -T --icons --level 1'
+alias ll='eza -l --icons'
