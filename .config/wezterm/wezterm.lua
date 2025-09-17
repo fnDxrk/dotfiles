@@ -15,6 +15,11 @@ config.keys = {
     mods = 'CTRL|SHIFT',
     action = wezterm.action.CloseCurrentTab { confirm = false },
   },
+  {
+    key = 'L',
+    mods = 'CTRL|SHIFT',
+    action = wezterm.action.DisableDefaultAssignment,
+  },
 }
 
 return config
