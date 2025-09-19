@@ -9,7 +9,7 @@ color_space = "lch"
 # harddark - harddark16 - harddarkcomp - harddarkcomp16
 # softdark - softdark16 - softdarkcomp - softdarkcomp16
 # softlight - softlight16 - softlightcomp - softlightcomp16
-palette = "softdark16"
+palette = "harddark16"
 
 # Should only be enabled when you notice an unreadable contrast frequently happening
 # with your images. The reference color for the contrast is the background color.
