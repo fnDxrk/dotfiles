@@ -1,6 +1,6 @@
 # Enable Powerlevel10k instant prompt
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+if [[ -r "${XDG_CACHE_HOME:=$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:=$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
 # Environment
@@ -19,6 +19,7 @@ setopt HIST_REDUCE_BLANKS
 setopt HIST_FIND_NO_DUPS
 setopt GLOB_COMPLETE
 #setopt globdots
+
 
 # Completion settings
 autoload -Uz compinit; compinit
@@ -72,11 +73,15 @@ bindkey "^[[A" history-beginning-search-backward-end
 bindkey "^[[B" history-beginning-search-forward-end
 
 # Source
-source $ZDOTDIR/alias
+source $ZDOTDIR/.alias
 
 # Antidote
 source /usr/share/zsh-antidote/antidote.zsh
 antidote load
+
+# Select menu autocomplete
+zmodload zsh/complist
+zstyle ':completion:*' menu select
 
 # To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
 [[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh

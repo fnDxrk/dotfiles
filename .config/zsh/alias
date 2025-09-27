@@ -1,3 +1,4 @@
 # eza
-alias ls='eza -T --icons --level 1'
-alias ll='eza -l --icons'
+alias ls='eza --icons=always'
+alias lt='eza -T --icons=always --level 1'
+alias ll='eza -l --icons=always'
