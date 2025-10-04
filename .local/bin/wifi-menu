@@ -9,11 +9,13 @@ wifi_list=$(LANG=C nmcli --fields "SECURITY,SSID" device wifi list | sed 1d | se
 connected=$(LANG=C nmcli -fields WIFI g)
 if [[ "$connected" =~ "enabled" ]]; then
     toggle="󰖪  Отключить Wi-Fi"
+    options="$toggle\n$wifi_list"
 elif [[ "$connected" =~ "disabled" ]]; then
     toggle="󰖩  Включить Wi-Fi"
+    options="$toggle"
 fi
 
-chosen_network=$(echo -e "$toggle\n$wifi_list" | uniq -u | rofi -dmenu -p "Wi-Fi SSID: " -selected-row 1 -theme "$THEME_PATH")
+chosen_network=$(echo -e "$options" | uniq -u | rofi -dmenu -p "Wi-Fi SSID:" -theme "$THEME_PATH")
 
 read -r chosen_id <<< "${chosen_network:3}"
 
@@ -43,7 +45,7 @@ else
     else
         # Запрашиваем пароль, если сеть защищена
         if [[ "$chosen_network" =~ "" ]]; then
-            wifi_password=$(rofi -dmenu -p "Пароль: " -theme "$THEME_PATH")
+            wifi_password=$(rofi -dmenu -p "Пароль:" -theme "$THEME_PATH")
         fi
 
         # Пытаемся подключиться к новой сети
