@@ -1,7 +1,12 @@
-# Enable Powerlevel10k instant prompt
-if [[ -r "${XDG_CACHE_HOME:=$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:=$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+# Fix percent (%) character before prompt in zsh
+if [[ "$TERM_PROGRAM" == "WezTerm" ]]; then
+  sleep 0.1
 fi
+
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.config/zsh/.zshrc
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi 
 
 # Environment
 HISTFILE="$ZDOTDIR/.zhistory"
