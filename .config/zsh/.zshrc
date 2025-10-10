@@ -70,7 +70,7 @@ bindkey '^[[1;3D' backward-word
 # Alt+Right - move cursor to next word
 bindkey '^[[1;3C' forward-word
 
-# Up/Down - search command history
+# Up/Down arrows search history by command prefix
 autoload -U history-search-end
 zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
@@ -87,6 +87,7 @@ antidote load
 # Select menu autocomplete
 zmodload zsh/complist
 zstyle ':completion:*' menu select
+bindkey -M menuselect '^[[Z' reverse-menu-complete
 
 # To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
 [[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
