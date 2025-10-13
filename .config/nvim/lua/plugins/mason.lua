@@ -23,6 +23,11 @@ return {
 					-- Python --
 					"pyright",
 					"ruff",
+
+					-- Bash --
+					"bashls",
+					"shellcheck",
+					"shfmt",
 				},
 			})
 		end,

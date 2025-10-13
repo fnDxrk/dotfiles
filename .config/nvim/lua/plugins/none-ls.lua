@@ -5,6 +5,7 @@ return {
 		null_ls.setup({
 			sources = {
 				null_ls.builtins.formatting.stylua,
+				null_ls.builtins.formatting.shfmt,
 				null_ls.builtins.formatting.clang_format.with({
 					extra_args = {
 						"--style={BasedOnStyle: webkit, IndentWidth: 2}",
