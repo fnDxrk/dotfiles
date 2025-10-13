@@ -1,23 +1,7 @@
-vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
+-- Навигация между окнами --
+vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Окно слева", silent = true })
+vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Окно снизу", silent = true })
+vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Окно сверху", silent = true })
+vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Окно справа", silent = true })
 
-vim.keymap.set('n', '<C-s>', '<cmd> w <CR>', opts)
-vim.keymap.set('n', '<leader>sn', '<cmd>noautocmd w <CR>', opts)
-
--- Neo-tree --
-vim.keymap.set('n', '<leader>e', ':Neotree filesystem left toggle reveal_force_cwd<CR>', {})
-
-vim.keymap.set("n", "K", vim.lsp.buf.hover)
-vim.keymap.set("n", "gd", vim.lsp.buf.definition)
-vim.keymap.set("n", "gr", vim.lsp.buf.references)
-vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action)
-
-vim.keymap.set("n", "<leader>gf", vim.lsp.buf.format, {})
-
-vim.keymap.set("n", "<C-h>", "<C-w>h", { noremap = true, silent = true })
-vim.keymap.set("n", "<C-l>", "<C-w>l", { noremap = true, silent = true })
-vim.keymap.set("n", "<C-k>", "<C-w>k", { noremap = true, silent = true })
-vim.keymap.set("n", "<C-j>", "<C-w>j", { noremap = true, silent = true })
-
-vim.keymap.set('n', '<C-S-h>', ':vertical resize -3<CR>', {})
-vim.keymap.set('n', '<C-S-l>', ':vertical resize +3<CR>', {})
-
+vim.keymap.set("n", "<leader>sl", ":AutoSession restore<CR>", { desc = "Open last session" })
