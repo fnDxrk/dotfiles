@@ -11,9 +11,9 @@ get_monitor() {
 switch_gpu() {
   get_monitor
   if [ -n "$MONITOR" ]; then
-    sed -i "s|env = AQ_DRM_DEVICES.*|env = AQ_DRM_DEVICES,/dev/dri/nvidia-dgpu:/dev/dri/amd-igpu|" "$CONFIG"
+    sed -i "s|env = AQ_DRM_DEVICES.*|env = AQ_DRM_DEVICES,/dev/dri/nvidia-gpu:/dev/dri/amd-gpu|" "$CONFIG"
   else
-    sed -i "s|env = AQ_DRM_DEVICES.*|env = AQ_DRM_DEVICES,/dev/dri/amd-igpu:/dev/dri/nvidia-dgpu|" "$CONFIG"
+    sed -i "s|env = AQ_DRM_DEVICES.*|env = AQ_DRM_DEVICES,/dev/dri/amd-gpu:/dev/dri/nvidia-gpu|" "$CONFIG"
   fi
   hyprctl reload
 }
