@@ -1,13 +1,16 @@
 return {
-	{
-		"neovim/nvim-lspconfig",
-		config = function()
-			local capabilities = require("cmp_nvim_lsp").default_capabilities()
-			vim.lsp.config("*", { capabilities = capabilities })
-
-			vim.diagnostic.config({
-				virtual_text = true,
-			})
-		end,
-	},
+  "neovim/nvim-lspconfig",
+  dependencies = {
+    "hrsh7th/cmp-nvim-lsp",
+  },
+  config = function()
+    vim.diagnostic.config({
+      virtual_text = false,
+      signs = true,
+      underline = true,
+      severity_sort = true,
+      float = { border = "rounded" },
+    })
+    vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostic" })
+  end,
 }

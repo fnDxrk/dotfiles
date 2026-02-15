@@ -1,63 +1,53 @@
 return {
-	{
-		"nvim-telescope/telescope.nvim",
-		tag = "0.1.8",
-		dependencies = { "nvim-lua/plenary.nvim" },
-		config = function()
-			require("telescope").setup({
-				defaults = {
-					follow = true,
-				},
-			})
-		end,
-		keys = {
-			{
-				"<leader>ff",
-				function()
-					require("telescope.builtin").find_files()
-				end,
-				desc = "Find files",
-			},
-			{
-				"<leader>fg",
-				function()
-					require("telescope.builtin").live_grep()
-				end,
-				desc = "Live grep",
-			},
-			{
-				"<leader>fb",
-				function()
-					require("telescope.builtin").buffers()
-				end,
-				desc = "Buffers",
-			},
-			{
-				"<leader>fh",
-				function()
-					require("telescope.builtin").help_tags()
-				end,
-				desc = "Help tags",
-			},
-			{
-				"<leader>fc",
-				function()
-					require("telescope.builtin").find_files({ cwd = "~/.config", hidden = true, follow = true })
-				end,
-			},
-		},
-	},
-	{
-		"nvim-telescope/telescope-ui-select.nvim",
-		config = function()
-			require("telescope").setup({
-				extensions = {
-					["ui-select"] = {
-						require("telescope.themes").get_dropdown({}),
-					},
-				},
-			})
-			require("telescope").load_extension("ui-select")
-		end,
-	},
+  "nvim-telescope/telescope.nvim",
+  version = "*",
+  dependencies = {
+    "nvim-lua/plenary.nvim",
+    {
+      "nvim-telescope/telescope-fzf-native.nvim",
+      build = "make",
+    },
+  },
+  keys = {
+    { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find files" },
+    { "<leader>fg", "<cmd>Telescope live_grep<cr>", desc = "Live grep" },
+    { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Find buffers" },
+    { "<leader>fr", "<cmd>Telescope resume<cr>", desc = "Resume" },
+  },
+  config = function()
+    local telescope = require("telescope")
+    local actions = require("telescope.actions")
+
+    telescope.setup({
+      defaults = {
+        prompt_prefix = " ",
+        selection_caret = " ",
+        entry_prefix = "  ",
+        border = true,
+        sorting_strategy = "ascending",
+        layout_config = {
+          prompt_position = "top",
+        },
+        mappings = {
+          i = {
+            ["<C-j>"] = actions.move_selection_next,
+            ["<C-k>"] = actions.move_selection_previous,
+            ["<Esc>"] = actions.close,
+            ["<C-d>"] = actions.delete_buffer,
+          },
+        },
+      },
+      pickers = {
+        find_files = {
+          hidden = true,
+          find_command = { "fd", "--type", "f", "-E", ".git" },
+        },
+        buffers = {
+          -- sort_mru = true,
+          ignore_current_buffer = true,
+        },
+      },
+    })
+    telescope.load_extension("fzf")
+  end,
 }
