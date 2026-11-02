@@ -1,3 +1,0 @@
-archlinux.org
-wiki.archlinux.org
-aur.archlinux.org
